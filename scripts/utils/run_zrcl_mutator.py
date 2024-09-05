@@ -17,7 +17,7 @@ def get_mutator_so_path(database):
 
 
 def get_config_path(database):
-  return f"{ROOTPATH}/data/config_{database}.yml"
+  return f"{ROOTPATH}/data/zrcl_mutator_config/config_{database}.yml"
 
 
 def set_env(database):
