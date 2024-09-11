@@ -105,18 +105,15 @@ unsigned int afl_custom_fuzz_count(SquirrelMutator *mutator,
   */
 
   //开始判断是否采用zrcl变异器，即zrcl变异器是否具有新的测试用例
-  mutator->select = !(mutator->zrcl_mutator.afl_custom_queue_new_entry())//若有新的测试用例返回true 否则返回false
+  mutator->select = !(mutator->zrcl_mutator.zrcl_is_have_new_in())//若有新的测试用例返回true 否则返回false
   if(mutator->select)
   {
     //若select为true，则采用squirrel变异器
     std::string sql((const char *)buf, buf_size);
     return mutator->database->mutate(sql);
   }
-  else
-  {
-    //若select为false，则采用zrcl变异器
-    return 1;
-  }
+  //若select为false，则采用zrcl变异器
+  return 1;
 }
 
 size_t afl_custom_fuzz(SquirrelMutator *mutator, uint8_t *buf, size_t buf_size,
