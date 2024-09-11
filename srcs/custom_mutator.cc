@@ -104,7 +104,7 @@ unsigned int afl_custom_fuzz_count(SquirrelMutator *mutator,
   */
 
   //开始判断是否采用zrcl变异器，即zrcl变异器是否具有新的测试用例
-  mutator->select = !zrcl_is_have_new_in(ZrclMutator* zrcl_mutator)//若有新的测试用例返回true 否则返回false
+  mutator->select = !(mutator->zrcl_mutator->afl_custom_queue_new_entry())//若有新的测试用例返回true 否则返回false
   if(mutator->select)
   {
     //若select为true，则采用zrcl变异器
