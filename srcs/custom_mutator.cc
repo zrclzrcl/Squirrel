@@ -19,6 +19,7 @@ struct ZrclMutator {
 		// 如果有需要清理的资源，可以在这里处理
 		// 目前没有需要清理的动态资源
 	}
+  bool zrcl_is_have_new_in();
 	char LLM_in_dir[50];
 	int fuzz_now;
 	int fuzz_next;
@@ -104,10 +105,10 @@ unsigned int afl_custom_fuzz_count(SquirrelMutator *mutator,
   */
 
   //开始判断是否采用zrcl变异器，即zrcl变异器是否具有新的测试用例
-  mutator->select = !(mutator->zrcl_mutator->afl_custom_queue_new_entry())//若有新的测试用例返回true 否则返回false
+  mutator->select = !(mutator->zrcl_mutator.afl_custom_queue_new_entry())//若有新的测试用例返回true 否则返回false
   if(mutator->select)
   {
-    //若select为true，则采用zrcl变异器
+    //若select为true，则采用squirrel变异器
     std::string sql((const char *)buf, buf_size);
     return mutator->database->mutate(sql);
   }
@@ -139,8 +140,8 @@ size_t afl_custom_fuzz(SquirrelMutator *mutator, uint8_t *buf, size_t buf_size,
     char file_name[50] = {0};     // 初始化文件名缓冲区
 
     // 拼接文件名并格式化路径
-    snprintf(file_name, sizeof(file_name), "LLM_G_%d.txt", fuzz_next);  // 使用 snprintf 格式化文件名
-    snprintf(LLM_in_path, sizeof(LLM_in_path), "%s%s", LLM_in_dir, file_name);  // 拼接完整路径
+    snprintf(file_name, sizeof(file_name), "LLM_G_%d.txt", mutator->zrcl_mutator.fuzz_next);  // 使用 snprintf 格式化文件名
+    snprintf(LLM_in_path, sizeof(LLM_in_path), "%s%s", mutator->zrcl_mutator.LLM_in_dir, file_name);  // 拼接完整路径
 
     //得到路径后，开始读取文件
 		FILE* file = fopen(LLM_in_path, "r");
@@ -162,7 +163,8 @@ size_t afl_custom_fuzz(SquirrelMutator *mutator, uint8_t *buf, size_t buf_size,
 
 		// 关闭文件
 		fclose(file);
-
+    mutator->zrcl_mutator.fuzz_next++;
+    mutator->zrcl_mutator.fuzz_now++;
 		// 返回读取的字节数
 		return bytes_read;
   }
