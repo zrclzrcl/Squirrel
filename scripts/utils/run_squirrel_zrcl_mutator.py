@@ -24,7 +24,7 @@ def set_env(database):
   os.environ["AFL_CUSTOM_MUTATOR_ONLY"] = "1"
   os.environ["AFL_DISABLE_TRIM"] = "1"
   os.environ["AFL_FAST_CAL"] = "1"
-  os.environ["AFL_CUSTOM_MUTATOR_LIBRARY"] = get_mutator_so_path(database) + ';' + f"{ROOTPATH}/../scripts/zrcl_db_mutator/zrcl_db_mutator/zrcl_db_mutator.so"
+  os.environ["AFL_CUSTOM_MUTATOR_LIBRARY"] = get_mutator_so_path(database)
   os.environ["SQUIRREL_CONFIG"] = get_config_path(database)
 
 
