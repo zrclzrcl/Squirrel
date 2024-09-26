@@ -49,6 +49,7 @@ def run(database, input_dir, output_dir=None, config_file=None, fuzzer=None):
   set_env(database)
 
   output_id = str(uuid.uuid4())[:10]
+  os.environ["OUT_PUT_ID"] = output_id
   if database == "sqlite":
     cmd =  f"{fuzzer} -i {input_dir} -o {output_dir} -M {output_id} -- /home/ossfuzz @@"
   else:
