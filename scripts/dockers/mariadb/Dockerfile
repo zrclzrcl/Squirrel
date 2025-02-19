@@ -21,8 +21,8 @@ RUN chmod +w /etc/sudoers && \
 RUN apt-get -y install apt-transport-https curl software-properties-common gnutls-dev
 RUN curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc \
     'https://mariadb.org/mariadb_release_signing_key.asc'
-RUN echo "deb https://ftp.osuosl.org/pub/mariadb/repo/10.10/ubuntu jammy main" >> /etc/apt/sources.list
-RUN echo "deb-src https://ftp.osuosl.org/pub/mariadb/repo/10.10/ubuntu jammy main" >> /etc/apt/sources.list
+RUN echo "deb https://ftp.osuosl.org/pub/mariadb/repo/10.11/ubuntu jammy main" >> /etc/apt/sources.list
+RUN echo "deb-src https://ftp.osuosl.org/pub/mariadb/repo/10.11/ubuntu jammy main" >> /etc/apt/sources.list
 RUN apt-get update && apt-get -y build-dep mariadb
 
 USER dobigthing
@@ -34,7 +34,7 @@ RUN git clone https://github.com/Dobigthing666/Squirrel.git && \
     cmake --build build -j && \
     cd AFLplusplus/ && LLVM_CONFIG=llvm-config-14 make -j20
 
-RUN git clone --depth=1 https://github.com/MariaDB/server.git mariadb && \
+RUN git clone https://github.com/MariaDB/server.git mariadb && cd mariadb && git checkout mariadb-10.11.1 && cd .. &&\
     mkdir bld && cd bld/ && \
     CC=/home/Squirrel/AFLplusplus/afl-clang-fast CXX=/home/Squirrel/AFLplusplus/afl-clang-fast++ cmake ../mariadb/ && \
     make -j20 && sudo cmake --install . --prefix /usr/local/mysql/

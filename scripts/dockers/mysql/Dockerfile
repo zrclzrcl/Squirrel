@@ -26,7 +26,7 @@ RUN git clone https://github.com/Dobigthing666/Squirrel.git && \
     cmake --build build -j && \
     cd AFLplusplus/ && LLVM_CONFIG=llvm-config-14 make -j20
 
-RUN git clone --depth=1 https://github.com/mysql/mysql-server.git mysql
+RUN git clone https://github.com/mysql/mysql-server.git mysql && cd mysql && git checkout mysql-8.0.30
 RUN sudo apt-get -y install apt-transport-https curl software-properties-common gnutls-dev
 RUN mkdir bld && cd bld/ && \
     CC=/home/Squirrel/AFLplusplus/afl-clang-fast CXX=/home/Squirrel/AFLplusplus/afl-clang-fast++ \
