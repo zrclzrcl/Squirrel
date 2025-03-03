@@ -26,14 +26,14 @@ RUN git clone https://github.com/Dobigthing666/Squirrel.git && \
     cmake --build build -j && \
     cd AFLplusplus/ && LLVM_CONFIG=llvm-config-14 make -j20
 
-RUN git clone https://github.com/mysql/mysql-server.git mysql && cd mysql && git checkout mysql-8.0.30
+RUN git clone https://github.com/mysql/mysql-server.git mysql && cd mysql && git checkout mysql-8.0.41
 RUN sudo apt-get -y install apt-transport-https curl software-properties-common gnutls-dev
 RUN mkdir bld && cd bld/ && \
     CC=/home/Squirrel/AFLplusplus/afl-clang-fast CXX=/home/Squirrel/AFLplusplus/afl-clang-fast++ \
     cmake ../mysql/ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=../boost \
     -DWITH_DEBUG=1 -DCPACK_MONOLITHIC_INSTALL=1 -DWITH_UNIT_TESTS=OFF
     
-RUN cd bld/ && make -j && sudo cmake --install . --prefix /usr/local/mysql/
+RUN cd bld/ && make && sudo cmake --install . --prefix /usr/local/mysql/
 
 RUN sudo chown dobigthing:dobigthing /usr/local/mysql/ -R && \
     cd /usr/local/mysql/ && mkdir mysql-files && chmod 750 mysql-files && \
